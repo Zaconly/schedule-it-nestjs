@@ -34,6 +34,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "shortid": "^2.2.16",
+    "slugify": "^1.4.6",
     "typeorm": "^0.2.30"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs"
 import { IsAlphanumeric, IsEmail, Length } from "class-validator"
-import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm"
+import { Board } from "src/boards/board.entity"
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from "typeorm"
 
 import { BaseContent } from "../utils/entity/BaseContent"
 import { Roles } from "../utils/types/user.type"
@@ -28,6 +29,9 @@ export class User extends BaseContent {
 
   @Column({ default: false })
   isConfirmed!: boolean
+
+  @OneToMany(target => Board, board => board.user)
+  boards!: Board[]
 
   async hashPassword(): Promise<string> {
     const password = await bcrypt.hash(this.password, 12)
