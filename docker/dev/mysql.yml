@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  sdl-mysql:
+    container_name: sdl-mysql
+    image: mysql:8.0.21
+    command: --default-authentication-plugin=mysql_native_password
+    # volumes:
+    #   - ../src/database/config/sql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: scheduleitdbowner
+      MYSQL_PASSWORD: scheduleitdbowner
+      MYSQL_DATABASE: scheduleitdb
+    ports:
+      - "3307:3306"
+
+  adminer:
+    container_name: sdl-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
