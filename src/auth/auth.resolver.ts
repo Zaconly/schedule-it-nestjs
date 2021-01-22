@@ -8,13 +8,13 @@ import { UserService } from "../users/user.service"
 import { Me } from "../utils/graphql/decorators"
 import { AuthResponse } from "../utils/graphql/response"
 import { LoginArgs } from "../users/user.args"
-import { AuthGuard } from "./auth.guard"
+import { GqlAuthGuard } from "./auth.guard"
 
 @Resolver(of => User)
 export class AuthResolver {
   constructor(private readonly userService: UserService, private authService: AuthService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => User, { name: "me" })
   async getMe(@Me() me: IMe): Promise<User> {
     return this.userService.findOne({ where: { id: me.id } })
