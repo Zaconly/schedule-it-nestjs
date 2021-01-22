@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { GraphQLModule } from "@nestjs/graphql"
 import { TypeOrmModule } from "@nestjs/typeorm"
+import { join } from "path"
 
-import { AppController } from "./app.controller"
-import { AppService } from "./app.service"
 import { BoardModule } from "./boards/board.module"
 import databaseConfig from "./config/database.config"
 import { UserModule } from "./users/user.module"
+import { isProd } from "./utils/helpers"
 import { envValidationSchema } from "./utils/validations"
 
 @Module({
@@ -18,14 +19,22 @@ import { envValidationSchema } from "./utils/validations"
       envFilePath: [".env.local", ".env"],
       validationSchema: envValidationSchema
     }),
+    GraphQLModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        autoSchemaFile: join(process.cwd(), "src/schema.gql"),
+        sortSchema: true,
+        debug: configService.get("DEBUG"),
+        playground: !isProd,
+        path: "/gql"
+      }),
+      inject: [ConfigService]
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => configService.get("database"),
       inject: [ConfigService]
     }),
     UserModule,
     BoardModule
-  ],
-  controllers: [AppController],
-  providers: [AppService]
+  ]
 })
 export class AppModule {}
