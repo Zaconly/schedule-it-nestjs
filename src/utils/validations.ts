@@ -9,5 +9,6 @@ export const envValidationSchema = Joi.object({
   DB_USER: Joi.string().default("root"),
   DB_PASSWORD: Joi.string().default("root"),
   DB_NAME: Joi.string().default("scheduleitdb"),
-  DEBUG: Joi.boolean().default("false")
+  DEBUG: Joi.boolean().default("false"),
+  ACCESS_TOKEN_SECRET: Joi.string().required()
 })

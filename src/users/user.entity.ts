@@ -1,11 +1,11 @@
 import { Field, ObjectType } from "@nestjs/graphql"
 import bcrypt from "bcryptjs"
 import { IsAlphanumeric, IsEmail, Length } from "class-validator"
-import { Board } from "src/boards/board.entity"
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from "typeorm"
 
+import { Board } from "../boards/board.entity"
 import { BaseContent } from "../utils/entity/BaseContent"
-import { Roles } from "../utils/types/user.type"
+import { Roles } from "../types/user.type"
 
 @ObjectType()
 @Entity("users")
@@ -18,7 +18,7 @@ export class User extends BaseContent {
 
   @Field()
   @IsEmail()
-  @Column({ length: 60 })
+  @Column({ length: 60, unique: true })
   email: string
 
   @Length(4, 60)
@@ -41,8 +41,11 @@ export class User extends BaseContent {
   boards: Board[]
 
   async hashPassword(): Promise<string> {
-    const password = await bcrypt.hash(this.password, 12)
-    return password
+    return bcrypt.hash(this.password, 12)
+  }
+
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password)
   }
 
   @BeforeInsert()

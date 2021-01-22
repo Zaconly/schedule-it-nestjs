@@ -9,6 +9,7 @@ import databaseConfig from "./config/database.config"
 import { UserModule } from "./users/user.module"
 import { isProd } from "./utils/helpers"
 import { envValidationSchema } from "./utils/validations"
+import { AuthModule } from "./auth/auth.module"
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { envValidationSchema } from "./utils/validations"
       inject: [ConfigService]
     }),
     UserModule,
-    BoardModule
+    BoardModule,
+    AuthModule
   ]
 })
 export class AppModule {}

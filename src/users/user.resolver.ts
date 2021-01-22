@@ -1,8 +1,8 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql"
-import { Board } from "src/boards/board.entity"
-import { BoardService } from "src/boards/board.service"
-import { RegisterArgs } from "./user.args"
 
+import { Board } from "../boards/board.entity"
+import { BoardService } from "../boards/board.service"
+import { RegisterInput } from "./user.args"
 import { User } from "./user.entity"
 import { UserService } from "./user.service"
 
@@ -19,8 +19,8 @@ export class UserResolver {
   }
 
   @Mutation(returns => User)
-  async addUser(@Args() args: RegisterArgs): Promise<User> {
-    const newUser = await this.userService.create(args)
+  async addUser(@Args("input") input: RegisterInput): Promise<User> {
+    const newUser = await this.userService.create(input)
     return newUser
   }
 

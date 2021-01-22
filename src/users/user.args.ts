@@ -1,8 +1,8 @@
-import { ArgsType, Field } from "@nestjs/graphql"
+import { ArgsType, Field, InputType } from "@nestjs/graphql"
 import { IsEmail, Length, MinLength } from "class-validator"
 
-@ArgsType()
-export class RegisterArgs {
+@InputType()
+export class RegisterInput {
   @Field()
   @Length(3, 30)
   username: string
