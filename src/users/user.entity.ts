@@ -53,4 +53,12 @@ export class User extends BaseContent {
   async savePassword(): Promise<void> {
     this.password = await this.hashPassword()
   }
+
+  static async changePassword(
+    password: string,
+    condition: Partial<Pick<User, "id" | "username" | "email">>
+  ): Promise<void> {
+    const newPassword = await bcrypt.hash(password, 12)
+    await User.update({ password: newPassword }, condition)
+  }
 }

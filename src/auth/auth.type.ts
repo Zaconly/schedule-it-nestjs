@@ -25,3 +25,23 @@ export class LoginArgs {
   @Field()
   password: string
 }
+
+@ArgsType()
+export class ResetPasswordArgs {
+  @Field()
+  token: string
+
+  @Field()
+  @Length(4, 60)
+  newPassword: string
+}
+
+@ArgsType()
+export class ChangePasswordArgs {
+  @Field()
+  currentPassword: string
+
+  @Field()
+  @Length(4, 60)
+  newPassword: string
+}

@@ -5,7 +5,8 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
-  Repository
+  Repository,
+  UpdateResult
 } from "typeorm"
 
 type Criteria<T> = string | string[] | number | number[] | Date | Date[] | FindConditions<T>
@@ -36,13 +37,17 @@ export class BaseService<T extends BaseEntity> {
     return newUser
   }
 
-  async update(conditions: FindOneOptions<T>, entity: Partial<T>): Promise<T> {
-    const currentEntity = await this.repository.findOne(conditions)
+  async modify(conditions: FindOneOptions<T>, entity: Partial<T>): Promise<T> {
+    const currentEntity = await this.repository.findOneOrFail(conditions)
 
     Object.assign(currentEntity, entity)
     currentEntity.save()
 
     return currentEntity
+  }
+
+  async update(set: DeepPartial<T>, conditions: { where: DeepPartial<T> }): Promise<UpdateResult> {
+    return this.repository.createQueryBuilder().update().set(set).where(conditions.where).execute()
   }
 
   async delete(criteria: Criteria<T>): Promise<DeleteResult> {

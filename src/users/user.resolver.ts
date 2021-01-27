@@ -2,7 +2,7 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/g
 
 import { Board } from "../boards/board.entity"
 import { BoardService } from "../boards/board.service"
-import { RegisterInput } from "./user.args"
+import { RegisterInput } from "../auth/auth.type"
 import { User } from "./user.entity"
 import { UserService } from "./user.service"
 

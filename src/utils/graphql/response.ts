@@ -10,3 +10,15 @@ export class AuthResponse {
   @Field()
   user: User
 }
+
+@ObjectType()
+export class Response {
+  @Field({ defaultValue: true })
+  success?: boolean
+
+  @Field()
+  message: string
+
+  @Field()
+  key: string
+}
